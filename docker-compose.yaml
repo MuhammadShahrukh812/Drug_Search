@@ -1,0 +1,30 @@
+version: '3'
+services:
+  flask-app:
+    build: .
+    container_name: flask-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_HOST=0.0.0.0
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+    command: ["python", "app.py"]
+
+  mysql:
+    container_name: mysqldb
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password123  
+      MYSQL_DATABASE: flaskappdb
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
